@@ -4,7 +4,7 @@ var game = new Phaser.Game('100', '100', Phaser.AUTO, '', {
     update: update
 })
 
-var roaches
+var roaches,ang = 0
 function preload () {
     game.load.spritesheet('roach', 'images/roach.png', 64, 64, 4)
 }
@@ -19,6 +19,6 @@ function create () {
     roaches.body.collideWorldBounds = true;
 }
 function update () {
-    roaches.body.angularVelocity = Math.random()*2000-1000
+    roaches.body.angularVelocity = ang + Math.random()*2000-1000
     roaches.body.velocity.copyFrom(game.physics.arcade.velocityFromAngle(roaches.angle, 600));
 }
