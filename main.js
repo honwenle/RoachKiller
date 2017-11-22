@@ -4,7 +4,7 @@ var game = new Phaser.Game('100', '100', Phaser.AUTO, '', {
     update: update
 })
 
-var roaches,ang = 0
+var roaches, corpse, ang = 0, qian = 0
 function preload () {
     game.load.spritesheet('roach', 'images/roach.png', 64, 64, 4)
 }
@@ -17,8 +17,33 @@ function create () {
     game.physics.enable(roaches, Phaser.Physics.ARCADE);
     roaches.anchor.setTo(0.5, 0.5);
     roaches.body.collideWorldBounds = true;
+
+    roaches.body.onWorldBounds = new Phaser.Signal();
+    roaches.body.onWorldBounds.add(hitWorldBounds, this);
+    
+    roaches.inputEnabled = true;
+    roaches.events.onInputDown.add(clickRoach, this);
 }
 function update () {
-    roaches.body.angularVelocity = ang + Math.random()*2000-1000
-    roaches.body.velocity.copyFrom(game.physics.arcade.velocityFromAngle(roaches.angle, 600));
+    if (qian) {
+        ang += 5
+        qian --
+    } else {
+        ang += Math.random()*90-45
+        ang %= 180
+    }
+    roaches.body.angularVelocity = ang;
+    roaches.body.velocity.copyFrom(game.physics.arcade.velocityFromAngle(roaches.angle, 700));
+}
+function hitWorldBounds() {
+    qian = 5
+}
+function clickRoach() {
+    roaches.kill()
+    corpse = game.add.sprite(roaches.x, roaches.y, 'roach', 3);
+    corpse.anchor.setTo(0.5, 0.5);
+    corpse.angle = roaches.angle
+    
+    roaches.body.angularVelocity = 0
+    roaches.reset(0, game.height/2);
 }
