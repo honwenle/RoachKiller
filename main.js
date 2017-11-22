@@ -44,6 +44,10 @@ function clickRoach() {
     corpse.anchor.setTo(0.5, 0.5);
     corpse.angle = roaches.angle
     
-    roaches.body.angularVelocity = 0
-    roaches.reset(0, game.height/2);
+    var startSide = Math.random()*4 | 0
+    roaches.angle = [0, 90, 180, 270][startSide]
+    roaches.reset(
+        [0, Math.random()*game.width, game.width, Math.random()*game.width][startSide],
+        [Math.random()*game.height, 0, Math.random()*game.height, game.height][startSide]
+    );
 }
