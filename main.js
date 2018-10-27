@@ -36,6 +36,7 @@ function update () {
             countdown_text.setText(countdown - passtime)
         } else {
             timer.stop()
+            document.title = '我消灭了' + score + '只小强'
             console.log('Game over')
         }
     }
